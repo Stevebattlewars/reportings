@@ -101,7 +101,16 @@ export const fetchDialfireReport = async (): Promise<ReportPayload> => {
   const response = await fetch('/api/dialfire-proxy')
 
   if (!response.ok) {
-    const message = await response.text()
+    const text = await response.text()
+    let message: string
+
+    try {
+      const parsed = JSON.parse(text) as { error?: string; detail?: string }
+      message = [parsed.error, parsed.detail].filter(Boolean).join(' ')
+    } catch {
+      message = text
+    }
+
     throw new Error(message || `Dialfire proxy failed with ${response.status}`)
   }
 

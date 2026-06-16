@@ -30,5 +30,8 @@ Use these settings:
 Required environment variables:
 
 - `DIALFIRE_CAMPAIGN_URL`
+- `DIALFIRE_REPORT_PATH`
 - `DIALFIRE_API_KEY`
 - `VITE_DEFAULT_COST_PER_CALL_CENTS`
+
+`DIALFIRE_REPORT_PATH` defaults to `/reports`. If Dialfire returns `403` for that route, set it to the exact report template route from Dialfire, for example `/reports/{template_name}/report/{locale}`.
