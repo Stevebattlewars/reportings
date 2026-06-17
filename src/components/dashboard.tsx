@@ -256,7 +256,7 @@ export const Dashboard = () => {
         </section>
 
         <section className="grid gap-6 xl:grid-cols-[0.85fr_1.15fr]">
-          <div className="rounded-3xl border border-white/10 bg-white/[0.07] p-5 backdrop-blur-xl">
+          <div className="min-w-0 rounded-3xl border border-white/10 bg-white/[0.07] p-5 backdrop-blur-xl">
             <div className="mb-5 flex items-center gap-2">
               <Filter className="h-5 w-5 text-sky-200" />
               <h2 className="text-lg font-semibold text-white">Live Filters</h2>
@@ -338,24 +338,30 @@ export const Dashboard = () => {
               <Users className="h-5 w-5 text-slate-500" />
             </div>
 
-            <div className="h-72">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.18)" />
-                  <XAxis dataKey="time" stroke="#94a3b8" tickLine={false} axisLine={false} />
-                  <YAxis stroke="#94a3b8" tickLine={false} axisLine={false} allowDecimals={false} />
-                  <Tooltip
-                    cursor={{ fill: 'rgba(14, 165, 233, 0.08)' }}
-                    contentStyle={{
-                      background: '#0f172a',
-                      border: '1px solid rgba(255,255,255,0.12)',
-                      borderRadius: '16px',
-                      color: '#e2e8f0',
-                    }}
-                  />
-                  <Bar dataKey="calls" fill="#38bdf8" radius={[8, 8, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+            <div className="h-72 min-w-0">
+              {chartData.length > 0 ? (
+                <ResponsiveContainer width="100%" height={288} minWidth={0} minHeight={288}>
+                  <BarChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.18)" />
+                    <XAxis dataKey="time" stroke="#94a3b8" tickLine={false} axisLine={false} />
+                    <YAxis stroke="#94a3b8" tickLine={false} axisLine={false} allowDecimals={false} />
+                    <Tooltip
+                      cursor={{ fill: 'rgba(14, 165, 233, 0.08)' }}
+                      contentStyle={{
+                        background: '#0f172a',
+                        border: '1px solid rgba(255,255,255,0.12)',
+                        borderRadius: '16px',
+                        color: '#e2e8f0',
+                      }}
+                    />
+                    <Bar dataKey="calls" fill="#38bdf8" radius={[8, 8, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex h-full items-center justify-center rounded-2xl border border-dashed border-white/10 bg-slate-950/30 px-6 text-center text-sm text-slate-500">
+                  Call volume appears here after Dialfire returns report rows.
+                </div>
+              )}
             </div>
           </div>
         </section>

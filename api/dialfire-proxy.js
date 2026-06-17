@@ -1,5 +1,5 @@
 const defaultCampaignUrl = 'https://api.dialfire.com/api/campaigns/P7XGJGFTHAG3U3VJ'
-const defaultReportPath = '/reports/main/report/de-DE'
+const defaultReportPath = '/reports/custom_dashboard/report/de-DE'
 
 const joinUrlPath = (baseUrl, path) => {
   const cleanBaseUrl = baseUrl.replace(/\/+$/, '')
@@ -46,11 +46,15 @@ export default async function handler(request, response) {
     const body = await dialfireResponse.text()
 
     if (!dialfireResponse.ok) {
+      const isMissingReportConfig = body.includes('Cannot read property "conf" from undefined')
+
       return response.status(dialfireResponse.status).json({
         error: `Dialfire reports API returned ${dialfireResponse.status} ${dialfireResponse.statusText}.`,
         detail:
           dialfireResponse.status === 403
-            ? 'The API key is valid for the campaign, but this report route is forbidden. Check report permissions and ensure DIALFIRE_REPORT_PATH is /reports/main/report/de-DE for the default main German report.'
+            ? 'The API key is valid for the campaign, but this report route is forbidden. Check report permissions and ensure DIALFIRE_REPORT_PATH is /reports/custom_dashboard/report/de-DE.'
+            : isMissingReportConfig
+              ? 'Dialfire reached the custom_dashboard report route, but the report template configuration is still missing or invalid. Check reports/custom_dashboard.json and verify the template has a valid conf object.'
             : body,
         url: reportUrl.toString(),
       })

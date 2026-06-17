@@ -30,8 +30,8 @@ Use these settings:
 Required environment variables:
 
 - `DIALFIRE_CAMPAIGN_URL=https://api.dialfire.com/api/campaigns/P7XGJGFTHAG3U3VJ`
-- `DIALFIRE_REPORT_PATH=/reports/main/report/de-DE`
+- `DIALFIRE_REPORT_PATH=/reports/custom_dashboard/report/de-DE`
 - `DIALFIRE_API_KEY=<Dialfire API token>`
 - `VITE_DEFAULT_COST_PER_CALL_CENTS=10`
 
-The report path targets Dialfire's default `main` report template with German locale. The proxy joins `DIALFIRE_CAMPAIGN_URL` and `DIALFIRE_REPORT_PATH` into `https://api.dialfire.com/api/campaigns/P7XGJGFTHAG3U3VJ/reports/main/report/de-DE`.
+The report path targets the explicit `custom_dashboard` report template with German locale. The proxy joins `DIALFIRE_CAMPAIGN_URL` and `DIALFIRE_REPORT_PATH` into `https://api.dialfire.com/api/campaigns/P7XGJGFTHAG3U3VJ/reports/custom_dashboard/report/de-DE`.
