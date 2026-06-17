@@ -1,5 +1,12 @@
 const defaultCampaignUrl = 'https://api.dialfire.com/api/campaigns/P7XGJGFTHAG3U3VJ'
-const defaultReportPath = '/reports'
+const defaultReportPath = '/reports/main/report/de-DE'
+
+const joinUrlPath = (baseUrl, path) => {
+  const cleanBaseUrl = baseUrl.replace(/\/+$/, '')
+  const cleanPath = path.replace(/^\/+/, '')
+
+  return `${cleanBaseUrl}/${cleanPath}`
+}
 
 export default async function handler(request, response) {
   if (request.method !== 'GET') {
@@ -17,8 +24,7 @@ export default async function handler(request, response) {
     })
   }
 
-  const normalizedReportPath = reportPath.startsWith('/') ? reportPath : `/${reportPath}`
-  const reportUrl = new URL(`${campaignUrl.replace(/\/$/, '')}${normalizedReportPath}`)
+  const reportUrl = new URL(joinUrlPath(campaignUrl, reportPath))
 
   for (const [key, value] of Object.entries(request.query ?? {})) {
     if (typeof value === 'string') {
@@ -44,8 +50,9 @@ export default async function handler(request, response) {
         error: `Dialfire reports API returned ${dialfireResponse.status} ${dialfireResponse.statusText}.`,
         detail:
           dialfireResponse.status === 403
-            ? 'The API key is valid for the campaign, but this report route is forbidden. Check report permissions or set DIALFIRE_REPORT_PATH to the exact report template path, for example /reports/{template_name}/report/{locale}.'
+            ? 'The API key is valid for the campaign, but this report route is forbidden. Check report permissions and ensure DIALFIRE_REPORT_PATH is /reports/main/report/de-DE for the default main German report.'
             : body,
+        url: reportUrl.toString(),
       })
     }
 
